@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Flask_Chat_App</title>
+    <script src = "../static/js/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        const socket = io();
+    /* $('#sendUsername').on("click", function(){
+      var text = $('#Username').val()
+      socket.emit('username', text)
+    }); */
+
+    var username = `{{user}}`;
+    socket.emit('username', username)
+
+
+    $('#sendmsg').on("click", function(){
+      var user = $('#recv').val()
+      var msg =  $('#message').val()
+      var det = {"username": user, "msg":msg}
+      //console.log(det)
+      socket.emit('message', det)
+    });
+
+    socket.on("messageclient", function(data){
+      console.log(data);
+      var sender = data["sender"];
+      var msg = data['msg'];
+      var text = sender + " : " + msg;
+      alert(text)
+    })
+
+
+    })
+    </script>
+  </head>
+  <body>
+
+Reciever username : <input type="text" id = "recv">
+   Enter Your message here:   <input type="text" id = "message">
+   <button type="button" id ="sendmsg"> Send</button>
+
+  </body>
+  </html>
